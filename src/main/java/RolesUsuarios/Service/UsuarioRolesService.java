@@ -85,26 +85,20 @@ public class UsuarioRolesService {
     public UsuarioResponseDTO actualizar(Long id, UsuarioRequestDTO request) {
 
         Usuario usuario = usu.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new UsuarioNotFoundException(id));
 
         Rol rol = roli.findByNombre(request.getRol())
-                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+                .orElseThrow(() -> new RolNotFoundException(request.getRol()));
 
         usuario.setNombre(request.getNombre());
         usuario.setCedula(request.getCedula());
         usuario.setEdad(request.getEdad());
+        usuario.setPassword(passwordEncoder.encode(request.getPassword()));
         usuario.setRol(rol);
 
         Usuario actualizado = usu.save(usuario);
 
-        UsuarioResponseDTO dto = new UsuarioResponseDTO();
-        dto.setId(actualizado.getId());
-        dto.setNombre(actualizado.getNombre());
-        dto.setCedula(actualizado.getCedula());
-        dto.setEdad(actualizado.getEdad());
-        dto.setRol(actualizado.getRol().getNombre());
-
-        return dto;
+        return convertirDTO(actualizado);
     }
 
 

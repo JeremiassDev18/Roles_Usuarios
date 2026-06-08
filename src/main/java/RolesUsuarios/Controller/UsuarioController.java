@@ -5,6 +5,7 @@ import RolesUsuarios.DTO.UsuarioRequestDTO;
 import RolesUsuarios.DTO.UsuarioResponseDTO;
 import RolesUsuarios.Entity.Usuario;
 import RolesUsuarios.Service.UsuarioRolesService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class UsuarioController {
 
     // POST /usuarios
     @PostMapping
-    public UsuarioResponseDTO crear(@RequestBody UsuarioRequestDTO dto) {
+    public UsuarioResponseDTO crear(@Valid @RequestBody UsuarioRequestDTO dto) {
         return service.CrearUsuario(dto);
     }
 
@@ -40,7 +41,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public UsuarioResponseDTO actualizar(@PathVariable Long id, @RequestBody UsuarioRequestDTO dto){
+    public UsuarioResponseDTO actualizar(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDTO dto){
         return service.actualizar(id, dto);
     }
 }
